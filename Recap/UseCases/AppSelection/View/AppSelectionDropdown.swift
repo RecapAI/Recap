@@ -35,6 +35,12 @@ struct AppSelectionDropdown: View {
         VStack(alignment: .leading, spacing: 0) {
             dropdownHeader
             
+            systemWideRow
+
+            if !viewModel.meetingApps.isEmpty || !viewModel.otherApps.isEmpty {
+                sectionDivider
+            }
+
             if !viewModel.meetingApps.isEmpty {
                 sectionHeader("Meeting Apps")
                 ForEach(viewModel.meetingApps) { app in
@@ -154,6 +160,45 @@ struct AppSelectionDropdown: View {
             .padding(.vertical, UIConstants.Spacing.gridSpacing)
     }
     
+    private var systemWideRow: some View {
+        Button {
+            onAppSelected(SelectableApp.allApps)
+        } label: {
+            HStack(spacing: 8) {
+                Image(nsImage: SelectableApp.allApps.icon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 14, height: 14)
+
+                Text("All Apps")
+                    .font(UIConstants.Typography.bodyText)
+                    .foregroundColor(UIConstants.Colors.textPrimary)
+                    .lineLimit(1)
+
+                Spacer(minLength: 0)
+
+                Circle()
+                    .fill(UIConstants.Colors.audioGreen)
+                    .frame(width: 5, height: 5)
+            }
+            .padding(.horizontal, UIConstants.Spacing.cardPadding)
+            .padding(.vertical, UIConstants.Spacing.gridCellSpacing * 2)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .background(
+            RoundedRectangle(cornerRadius: UIConstants.Sizing.cornerRadius * 0.3)
+                .fill(Color.clear)
+                .onHover { isHovered in
+                    if isHovered {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+        )
+    }
+
     private var clearSelectionRow: some View {
         Button {
             onClearSelection()
