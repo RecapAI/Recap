@@ -65,7 +65,7 @@ struct CustomTextEditor: View {
                     .focused($isFocused)
                     .lineLimit(nil)
                     .textSelection(.enabled)
-                    .onChange(of: isFocused) { _, focused in
+                    .onChange(of: isFocused) { oldValue, focused in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             isEditing = focused
                         }

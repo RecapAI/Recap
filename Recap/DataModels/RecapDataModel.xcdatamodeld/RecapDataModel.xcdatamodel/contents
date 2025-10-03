@@ -35,6 +35,7 @@
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="summaryText" optional="YES" attributeType="String"/>
         <attribute name="transcriptionText" optional="YES" attributeType="String"/>
+        <attribute name="timestampedTranscriptionData" optional="YES" attributeType="Binary"/>
         <fetchIndex name="byCreatedAt">
             <fetchIndexElement property="createdAt" type="Binary" order="descending"/>
         </fetchIndex>

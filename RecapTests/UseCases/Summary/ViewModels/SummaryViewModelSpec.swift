@@ -163,6 +163,7 @@ private extension SummaryViewModelSpec {
             applicationName: "Test App",
             transcriptionText: "Test transcription",
             summaryText: summaryText,
+            timestampedTranscription: nil,
             createdAt: Date(),
             modifiedAt: Date()
         )

@@ -5,7 +5,7 @@ import OSLog
 import Combine
 
 @MainActor
-final class AudioProcessController: AudioProcessControllerType {
+final class AudioProcessController: @MainActor AudioProcessControllerType {
     private let logger = Logger(subsystem: AppConstants.Logging.subsystem, category: String(describing: AudioProcessController.self))
     
     private let detectionService: AudioProcessDetectionServiceType

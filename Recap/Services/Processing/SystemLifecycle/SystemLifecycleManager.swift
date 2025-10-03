@@ -7,6 +7,7 @@ protocol SystemLifecycleDelegate: AnyObject {
     func systemDidWake()
 }
 
+@MainActor
 final class SystemLifecycleManager {
     weak var delegate: SystemLifecycleDelegate?
     
@@ -26,7 +27,9 @@ final class SystemLifecycleManager {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.delegate?.systemWillSleep()
+            Task { @MainActor in
+                self?.delegate?.systemWillSleep()
+            }
         }
         
         wakeObserver = notificationCenter.addObserver(
@@ -34,7 +37,9 @@ final class SystemLifecycleManager {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.delegate?.systemDidWake()
+            Task { @MainActor in
+                self?.delegate?.systemDidWake()
+            }
         }
     }
     

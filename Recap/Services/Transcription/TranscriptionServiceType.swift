@@ -13,6 +13,25 @@ struct TranscriptionResult: Equatable {
     let combinedText: String
     let transcriptionDuration: TimeInterval
     let modelUsed: String
+    
+    // New timestamped transcription data
+    let timestampedTranscription: TimestampedTranscription?
+    
+    init(
+        systemAudioText: String,
+        microphoneText: String?,
+        combinedText: String,
+        transcriptionDuration: TimeInterval,
+        modelUsed: String,
+        timestampedTranscription: TimestampedTranscription? = nil
+    ) {
+        self.systemAudioText = systemAudioText
+        self.microphoneText = microphoneText
+        self.combinedText = combinedText
+        self.transcriptionDuration = transcriptionDuration
+        self.modelUsed = modelUsed
+        self.timestampedTranscription = timestampedTranscription
+    }
 }
 
 enum TranscriptionError: LocalizedError {

@@ -39,7 +39,7 @@ struct CustomDropdown<T: Hashable>: View {
                     .frame(width: 285)
                     .frame(maxHeight: showSearch ? 350 : 300)
             }
-            .onChange(of: isExpanded) { _, expanded in
+            .onChange(of: isExpanded) { oldValue, expanded in
                 if !expanded {
                     searchText = ""
                 }

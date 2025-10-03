@@ -12,6 +12,7 @@ struct RecordingInfo: Identifiable, Equatable {
     let applicationName: String?
     let transcriptionText: String?
     let summaryText: String?
+    let timestampedTranscription: TimestampedTranscription?
     let createdAt: Date
     let modifiedAt: Date
     
@@ -50,6 +51,13 @@ extension RecordingInfo {
         self.applicationName = entity.applicationName
         self.transcriptionText = entity.transcriptionText
         self.summaryText = entity.summaryText
+        
+        // Decode timestamped transcription data if available
+        if let data = entity.timestampedTranscriptionData {
+            self.timestampedTranscription = try? JSONDecoder().decode(TimestampedTranscription.self, from: data)
+        } else {
+            self.timestampedTranscription = nil
+        }
         self.createdAt = entity.createdAt ?? Date()
         self.modifiedAt = entity.modifiedAt ?? Date()
     }

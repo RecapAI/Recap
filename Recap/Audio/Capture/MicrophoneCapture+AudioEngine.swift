@@ -57,12 +57,39 @@ extension MicrophoneCapture {
             throw AudioCaptureError.coreAudioError("No output URL specified")
         }
         
+        // Verify input node is available and has audio input
+        guard let inputNode = inputNode else {
+            throw AudioCaptureError.coreAudioError("Input node not available")
+        }
+        
+        let inputFormat = inputNode.inputFormat(forBus: 0)
+        logger.info("Starting audio engine with input format: \(inputFormat.sampleRate)Hz, \(inputFormat.channelCount)ch")
+        
+        // Check if input node has audio input available
+        if inputFormat.channelCount == 0 {
+            logger.warning("Input node has no audio channels available - microphone may not be connected or permission denied")
+            throw AudioCaptureError.coreAudioError("No audio input channels available - check microphone connection and permissions")
+        }
+        
+        // Verify microphone permission before starting
+        let permissionStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+        if permissionStatus != .authorized {
+            logger.error("Microphone permission not authorized: \(permissionStatus.rawValue)")
+            throw AudioCaptureError.microphonePermissionDenied
+        }
+        
         try createAudioFile(at: outputURL)
         try installAudioTap()
-        try audioEngine.start()
+        
+        do {
+            try audioEngine.start()
+            logger.info("AVAudioEngine started successfully")
+        } catch {
+            logger.error("Failed to start AVAudioEngine: \(error)")
+            throw AudioCaptureError.coreAudioError("Failed to start audio engine: \(error.localizedDescription)")
+        }
         
         isRecording = true
-        logger.info("AVAudioEngine started successfully")
     }
     
     func installAudioTap() throws {

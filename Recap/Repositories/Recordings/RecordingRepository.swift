@@ -139,6 +139,26 @@ final class RecordingRepository: RecordingRepositoryType {
         }
     }
     
+    func updateRecordingTimestampedTranscription(id: String, timestampedTranscription: TimestampedTranscription) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            coreDataManager.performBackgroundTask { context in
+                do {
+                    let recording = try self.fetchRecordingEntity(id: id, context: context)
+                    
+                    // Encode the timestamped transcription to binary data
+                    let data = try JSONEncoder().encode(timestampedTranscription)
+                    recording.timestampedTranscriptionData = data
+                    recording.modifiedAt = Date()
+                    
+                    try context.save()
+                    continuation.resume()
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
     func updateRecordingSummary(id: String, summaryText: String) async throws {
         try await withCheckedThrowingContinuation { continuation in
             coreDataManager.performBackgroundTask { context in
