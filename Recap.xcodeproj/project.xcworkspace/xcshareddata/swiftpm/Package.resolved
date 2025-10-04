@@ -1,5 +1,5 @@
 {
-  "originHash" : "22354261936fd8aee2d8d59cf96bf117f6576de93e6af7c22971e4ff62cecf2d",
+  "originHash" : "f67188f4de6ac4a4c2f88a4975d877b938f676c380b1104ca1e83ae31d5e359d",
   "pins" : [
     {
       "identity" : "jinja",
@@ -38,6 +38,15 @@
       }
     },
     {
+      "identity" : "openai",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MacPaw/OpenAI.git",
+      "state" : {
+        "revision" : "80045fcda7ba727a327eb0a525e983fd7a796c70",
+        "version" : "0.4.6"
+      }
+    },
+    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
@@ -65,12 +74,30 @@
       }
     },
     {
+      "identity" : "swift-http-types",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-http-types",
+      "state" : {
+        "revision" : "a0a57e949a8903563aba4615869310c0ebf14c03",
+        "version" : "1.4.0"
+      }
+    },
+    {
       "identity" : "swift-markdown-ui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
       "state" : {
         "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
         "version" : "2.4.1"
+      }
+    },
+    {
+      "identity" : "swift-openapi-runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-runtime",
+      "state" : {
+        "revision" : "7722cf8eac05c1f1b5b05895b04cfcc29576d9be",
+        "version" : "1.8.3"
       }
     },
     {
@@ -96,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/argmaxinc/WhisperKit.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "3f13167641cf49a6023f509cda674e22f93b5220"
+        "revision" : "3f451e14fdd29276fbf548343e17a50b2bfd16f7",
+        "version" : "0.14.0"
       }
     },
     {

@@ -13,6 +13,7 @@
 		A7BF55C92E38BF40003536FB /* Ollama in Frameworks */ = {isa = PBXBuildFile; productRef = A7BF55C82E38BF40003536FB /* Ollama */; };
 		A7C35B112E3DFD2700F9261F /* Mockable in Frameworks */ = {isa = PBXBuildFile; productRef = A7C35B102E3DFD2700F9261F /* Mockable */; };
 		A7C35B192E3DFDB500F9261F /* Mockable in Frameworks */ = {isa = PBXBuildFile; productRef = A7C35B182E3DFDB500F9261F /* Mockable */; };
+		E72FA4FF2E8EC8A300BA8587 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = E72FA4FE2E8EC8A300BA8587 /* OpenAI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 				Audio/Models/AudioProcess.swift,
 				Audio/Models/AudioProcessGroup.swift,
 				Audio/Processing/Detection/AudioProcessControllerType.swift,
+				Audio/Processing/FileManagement/RecordingFileManagerHelper.swift,
 				DataModels/RecapDataModel.xcdatamodeld,
 				Helpers/Availability/AvailabilityHelper.swift,
 				"Helpers/Colors/Color+Extension.swift",
@@ -71,6 +73,9 @@
 				Services/LLM/Providers/Ollama/OllamaAPIClient.swift,
 				Services/LLM/Providers/Ollama/OllamaModel.swift,
 				Services/LLM/Providers/Ollama/OllamaProvider.swift,
+				Services/LLM/Providers/OpenAI/OpenAIAPIClient.swift,
+				Services/LLM/Providers/OpenAI/OpenAIModel.swift,
+				Services/LLM/Providers/OpenAI/OpenAIProvider.swift,
 				Services/LLM/Providers/OpenRouter/OpenRouterAPIClient.swift,
 				Services/LLM/Providers/OpenRouter/OpenRouterModel.swift,
 				Services/LLM/Providers/OpenRouter/OpenRouterProvider.swift,
@@ -85,12 +90,19 @@
 				Services/Processing/Models/ProcessingState.swift,
 				Services/Processing/Models/RecordingProcessingState.swift,
 				Services/Processing/ProcessingCoordinator.swift,
+				"Services/Processing/ProcessingCoordinator+Completion.swift",
+				"Services/Processing/ProcessingCoordinator+Helpers.swift",
+				"Services/Processing/ProcessingCoordinator+Transcription.swift",
 				Services/Processing/ProcessingCoordinatorType.swift,
 				Services/Processing/SystemLifecycle/SystemLifecycleManager.swift,
 				Services/Summarization/Models/SummarizationRequest.swift,
 				Services/Summarization/Models/SummarizationResult.swift,
 				Services/Summarization/SummarizationServiceType.swift,
+				Services/Transcription/Models/TranscriptionSegment.swift,
 				Services/Transcription/TranscriptionServiceType.swift,
+				Services/Transcription/Utils/TranscriptionMarkdownExporter.swift,
+				Services/Transcription/Utils/TranscriptionMerger.swift,
+				Services/Transcription/Utils/TranscriptionTextCleaner.swift,
 				Services/Utilities/Warnings/ProviderWarningCoordinator.swift,
 				Services/Utilities/Warnings/WarningManager.swift,
 				Services/Utilities/Warnings/WarningManagerType.swift,
@@ -98,10 +110,16 @@
 				UIComponents/Cards/ActionableWarningCard.swift,
 				UseCases/Onboarding/ViewModel/OnboardingViewModel.swift,
 				UseCases/Onboarding/ViewModel/OnboardingViewModelType.swift,
+				UseCases/Settings/Components/FolderSettingsView.swift,
 				UseCases/Settings/Components/MeetingDetection/MeetingDetectionView.swift,
 				UseCases/Settings/Components/Reusable/CustomToggle.swift,
 				UseCases/Settings/Components/SettingsCard.swift,
+				"UseCases/Settings/Components/TabViews/GeneralSettingsView+Preview.swift",
+				UseCases/Settings/ViewModels/FolderSettingsViewModel.swift,
 				UseCases/Settings/ViewModels/General/GeneralSettingsViewModel.swift,
+				"UseCases/Settings/ViewModels/General/GeneralSettingsViewModel+APIKeys.swift",
+				"UseCases/Settings/ViewModels/General/GeneralSettingsViewModel+ModelManagement.swift",
+				"UseCases/Settings/ViewModels/General/GeneralSettingsViewModel+ProviderValidation.swift",
 				UseCases/Settings/ViewModels/General/GeneralSettingsViewModelType.swift,
 				UseCases/Settings/ViewModels/MeetingDetection/MeetingDetectionSettingsViewModel.swift,
 				UseCases/Settings/ViewModels/MeetingDetection/MeetingDetectionSettingsViewModelType.swift,
@@ -112,12 +130,20 @@
 			);
 			target = A721065F2E30165B0073C515 /* RecapTests */;
 		};
+		E7A63B8F2E84794D00192B23 /* Exceptions for "Recap" folder in "Recap" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A72106512E3016590073C515 /* Recap */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A72106542E3016590073C515 /* Recap */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				E7A63B8F2E84794D00192B23 /* Exceptions for "Recap" folder in "Recap" target */,
 				A7C35B1B2E3DFE1D00F9261F /* Exceptions for "Recap" folder in "RecapTests" target */,
 			);
 			path = Recap;
@@ -139,6 +165,7 @@
 				A73F0CBD2E350D2700B07BB2 /* WhisperKit in Frameworks */,
 				A73F0CBF2E350D2700B07BB2 /* whisperkit-cli in Frameworks */,
 				A743B08B2E3D479600785BFF /* MarkdownUI in Frameworks */,
+				E72FA4FF2E8EC8A300BA8587 /* OpenAI in Frameworks */,
 				A7C35B112E3DFD2700F9261F /* Mockable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,6 +224,7 @@
 				A7BF55C82E38BF40003536FB /* Ollama */,
 				A743B08A2E3D479600785BFF /* MarkdownUI */,
 				A7C35B102E3DFD2700F9261F /* Mockable */,
+				E72FA4FE2E8EC8A300BA8587 /* OpenAI */,
 			);
 			productName = Recap;
 			productReference = A72106522E3016590073C515 /* Recap.app */;
@@ -234,7 +262,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					A72106512E3016590073C515 = {
 						CreatedOnToolsVersion = 16.4;
@@ -259,6 +287,7 @@
 				A7BF55C72E38BF40003536FB /* XCRemoteSwiftPackageReference "ollama-swift" */,
 				A743B0892E3D479600785BFF /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				A7C35B0F2E3DFD2700F9261F /* XCRemoteSwiftPackageReference "Mockable" */,
+				E72FA4FD2E8EC8A300BA8587 /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A72106532E3016590073C515 /* Products */;
@@ -348,6 +377,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = EY7EQX6JC5;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -373,6 +403,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited) MOCKING";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -412,6 +443,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = EY7EQX6JC5;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -429,7 +461,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -443,9 +477,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = EY7EQX6JC5;
+				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3KRL43SU3T;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Recap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Recap;
@@ -457,8 +505,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.rawa.Recap;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nilleb.Recap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited) MOCKING";
@@ -476,9 +524,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = EY7EQX6JC5;
+				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3KRL43SU3T;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Recap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Recap;
@@ -490,8 +552,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.rawa.Recap;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nilleb.Recap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -505,11 +567,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = EY7EQX6JC5;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3KRL43SU3T;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.rawa.RecapTests;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nilleb.RecapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited) MOCKING";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -524,11 +587,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = EY7EQX6JC5;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3KRL43SU3T;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.rawa.RecapTests;
+				PRODUCT_BUNDLE_IDENTIFIER = co.nilleb.RecapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -573,8 +637,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/argmaxinc/WhisperKit.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
 			};
 		};
 		A743B0892E3D479600785BFF /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
@@ -599,6 +663,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.4.0;
+			};
+		};
+		E72FA4FD2E8EC8A300BA8587 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -633,6 +705,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A7C35B0F2E3DFD2700F9261F /* XCRemoteSwiftPackageReference "Mockable" */;
 			productName = Mockable;
+		};
+		E72FA4FE2E8EC8A300BA8587 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E72FA4FD2E8EC8A300BA8587 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
