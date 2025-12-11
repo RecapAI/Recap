@@ -49,7 +49,7 @@ Recap is broken in its current state, but since I use it daily myself, you can a
 Recap is an open-source, privacy-focused, macOS-native project to help you summarize your meetings. You could summarize audio of any app, not just meetings.
 
 ## Features
-- **Meeting Detection**: Automatically detects meetings in Microsoft Teams, Zoom, Google Meet, and more using macOS ScreenCaptureKit (Coming Soon!)
+- **Meeting Detection**: Automatically detects meetings in Microsoft Teams, Zoom, Google Meet, and more using macOS ScreenCaptureKit
 - **Audio Recording**: Records system audio and optionally microphone input
 - **Local Processing**: Uses WhisperKit for transcription and Ollama/(optionally, OpenRouter) for summarization
 - **Privacy First**: No data leaves your device unless you choose to share it
@@ -64,7 +64,7 @@ Recap is an open-source, privacy-focused, macOS-native project to help you summa
 ### Roadmap:
 
 Working on the following features now:
-- [ ] Meeting Detection (Teams, Zoom, Google etc) (PR In progress)
+- [ ] Meeting Detection (Teams, Zoom, Google etc)
 - [ ] Custom Prompt Via Settings (PR In Progress)
 - [ ] Live Transcription using Parakeet V2 (PR In Progress)
 - [ ] Background Audio Processing
