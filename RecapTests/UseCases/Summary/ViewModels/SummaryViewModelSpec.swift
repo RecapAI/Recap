@@ -110,19 +110,57 @@ final class SummaryViewModelSpec: XCTestCase {
     func testRetryProcessingForTranscriptionFailed() async throws {
         let recording = createTestRecording(id: "test-id", state: .transcriptionFailed)
         sut.currentRecording = recording
-        
+
         given(mockProcessingCoordinator)
             .retryProcessing(recordingID: .any)
             .willReturn()
-        
+
         given(mockRecordingRepository)
             .fetchRecording(id: .any)
             .willReturn(recording)
-        
+
         await sut.retryProcessing()
-        
+
         verify(mockProcessingCoordinator)
             .retryProcessing(recordingID: .any)
+            .called(1)
+    }
+
+    func testRetryProcessingForSummarizationFailed() async throws {
+        let recording = createTestRecording(id: "test-id", state: .summarizationFailed)
+        sut.currentRecording = recording
+
+        given(mockProcessingCoordinator)
+            .retrySummarization(recordingID: .any)
+            .willReturn()
+
+        given(mockRecordingRepository)
+            .fetchRecording(id: .any)
+            .willReturn(recording)
+
+        await sut.retryProcessing()
+
+        verify(mockProcessingCoordinator)
+            .retrySummarization(recordingID: .any)
+            .called(1)
+    }
+
+    func testRetryProcessingForCompletedCallsRetrySummarization() async throws {
+        let recording = createTestRecording(id: "test-id", state: .completed, summaryText: "Old summary")
+        sut.currentRecording = recording
+
+        given(mockProcessingCoordinator)
+            .retrySummarization(recordingID: .any)
+            .willReturn()
+
+        given(mockRecordingRepository)
+            .fetchRecording(id: .any)
+            .willReturn(recording)
+
+        await sut.retryProcessing()
+
+        verify(mockProcessingCoordinator)
+            .retrySummarization(recordingID: .any)
             .called(1)
     }
     
