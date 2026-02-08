@@ -76,7 +76,7 @@ struct MeetingDetectionView<ViewModel: MeetingDetectionSettingsViewModelType>: V
                 await viewModel.checkPermissionStatus()
             }
         }
-        .onChange(of: viewModel.autoDetectMeetings) { enabled in
+        .onChange(of: viewModel.autoDetectMeetings) { oldValue, enabled in
             if enabled {
                 Task {
                     await viewModel.checkPermissionStatus()

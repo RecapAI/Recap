@@ -7,7 +7,8 @@ struct SelectableApp: Identifiable, Hashable {
     let icon: NSImage
     let isMeetingApp: Bool
     let isAudioActive: Bool
-    private let originalAudioProcess: AudioProcess
+    let isSystemWide: Bool
+    private let originalAudioProcess: AudioProcess?
     
     init(from audioProcess: AudioProcess) {
         self.id = audioProcess.id
@@ -15,11 +16,35 @@ struct SelectableApp: Identifiable, Hashable {
         self.icon = audioProcess.icon
         self.isMeetingApp = audioProcess.isMeetingApp
         self.isAudioActive = audioProcess.audioActive
+        self.isSystemWide = false
         self.originalAudioProcess = audioProcess
     }
     
+    private init(systemWide: Bool) {
+        self.id = -1
+        self.name = "All Apps"
+        self.icon = NSWorkspace.shared.icon(for: .wav)
+        self.isMeetingApp = false
+        self.isAudioActive = true
+        self.isSystemWide = true
+        self.originalAudioProcess = nil
+    }
+
+    static let allApps = SelectableApp(systemWide: true)
+
     var audioProcess: AudioProcess {
-        originalAudioProcess
+        guard let originalAudioProcess = originalAudioProcess else {
+            return AudioProcess(
+                id: -1,
+                kind: .app,
+                name: "All Apps",
+                audioActive: true,
+                bundleID: nil,
+                bundleURL: nil,
+                objectID: .unknown
+            )
+        }
+        return originalAudioProcess
     }
     
     func hash(into hasher: inout Hasher) {

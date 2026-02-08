@@ -65,8 +65,10 @@ final class DropdownWindowManager: ObservableObject {
         guard let window = dropdownWindow else { return }
         
         animateDropdownOut(window: window) {
-            window.orderOut(nil)
-            self.dropdownWindow = nil
+            Task { @MainActor in
+                window.orderOut(nil)
+                self.dropdownWindow = nil
+            }
         }
         
         if let monitor = globalMonitor {
@@ -95,7 +97,7 @@ final class DropdownWindowManager: ObservableObject {
         }
     }
     
-    private func animateDropdownOut(window: NSWindow, completion: @escaping () -> Void) {
+    private func animateDropdownOut(window: NSWindow, completion: @Sendable @escaping () -> Void) {
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.2
             context.timingFunction = CAMediaTimingFunction(name: .easeIn)

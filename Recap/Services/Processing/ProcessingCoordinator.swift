@@ -126,6 +126,14 @@ final class ProcessingCoordinator: ProcessingCoordinatorType {
             transcriptionText: transcriptionResult.combinedText
         )
         
+        // Save timestamped transcription data if available
+        if let timestampedTranscription = transcriptionResult.timestampedTranscription {
+            try await recordingRepository.updateRecordingTimestampedTranscription(
+                id: recording.id,
+                timestampedTranscription: timestampedTranscription
+            )
+        }
+        
         try await updateRecordingState(recording.id, state: .transcribed)
         
         return transcriptionResult.combinedText

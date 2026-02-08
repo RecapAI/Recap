@@ -137,6 +137,20 @@ final class SummaryViewModel: SummaryViewModelType {
         }
     }
     
+    func copyTranscription() {
+        guard let transcriptionText = currentRecording?.transcriptionText else { return }
+        
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(transcriptionText, forType: .string)
+        
+        showingCopiedToast = true
+        
+        Task {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            showingCopiedToast = false
+        }
+    }
+    
     deinit {
         Task { @MainActor [weak self] in
             self?.stopAutoRefresh()

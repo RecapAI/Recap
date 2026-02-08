@@ -81,7 +81,7 @@ final class AppSelectionViewModel: AppSelectionViewModelType {
                 return lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
             }
         
-        availableApps = sortedApps
+        availableApps = [SelectableApp.allApps] + sortedApps
         meetingApps = sortedApps.filter(\.isMeetingApp)
         otherApps = sortedApps.filter { !$0.isMeetingApp }
     }

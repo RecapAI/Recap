@@ -61,7 +61,7 @@ struct DownloadPillButton: View {
                 iconOffset = 3
             }
         }
-        .onChange(of: isDownloading) { newValue in
+        .onChange(of: isDownloading) { oldValue, newValue in
             if newValue {
                 iconOffset = 3
             } else {

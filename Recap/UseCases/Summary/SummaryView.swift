@@ -148,9 +148,14 @@ struct SummaryView<ViewModel: SummaryViewModelType>: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: UIConstants.Spacing.cardSpacing) {
                     if let recording = viewModel.currentRecording,
-                       let summaryText = recording.summaryText {
+                       let summaryText = recording.summaryText,
+                       let transcriptionText = recording.transcriptionText {
                         
                         VStack(alignment: .leading, spacing: UIConstants.Spacing.cardInternalSpacing) {
+                            if !transcriptionText.isEmpty {
+                                TranscriptDropdownButton(transcriptText: transcriptionText)
+                            }
+                            
                             Text("Summary")
                                 .font(UIConstants.Typography.infoCardTitle)
                                 .foregroundColor(UIConstants.Colors.textPrimary)
@@ -211,10 +216,17 @@ struct SummaryView<ViewModel: SummaryViewModelType>: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 SummaryActionButton(
-                    text: "Copy",
+                    text: "Copy Summary",
                     icon: "doc.on.doc"
                 ) {
                     viewModel.copySummary()
+                }
+                
+                SummaryActionButton(
+                    text: "Copy Transcription",
+                    icon: "doc.text"
+                ) {
+                    viewModel.copyTranscription()
                 }
                 
                 SummaryActionButton(

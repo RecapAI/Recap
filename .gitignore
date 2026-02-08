@@ -91,3 +91,8 @@ iOSInjectionProject/
 
 # Mac OS
 .DS_Store
+
+# Archive outputs
+Archives/
+*.xcarchive
+Recap.app

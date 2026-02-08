@@ -16,4 +16,5 @@ protocol SummaryViewModelType: ObservableObject {
     func startAutoRefresh()
     func stopAutoRefresh()
     func copySummary()
+    func copyTranscription()
 }
