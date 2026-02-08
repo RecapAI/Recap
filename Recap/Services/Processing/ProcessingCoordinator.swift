@@ -59,8 +59,45 @@ final class ProcessingCoordinator: ProcessingCoordinatorType {
     func retryProcessing(recordingID: String) async {
         guard let recording = try? await recordingRepository.fetchRecording(id: recordingID),
               recording.canRetry else { return }
-        
+
         await startProcessing(recordingInfo: recording)
+    }
+
+    func retrySummarization(recordingID: String) async {
+        guard let recording = try? await recordingRepository.fetchRecording(id: recordingID),
+              let transcriptionText = recording.transcriptionText,
+              !transcriptionText.isEmpty else { return }
+
+        currentProcessingState = .processing(recordingID: recording.id)
+        delegate?.processingDidStart(recordingID: recording.id)
+
+        processingTask = Task {
+            await resumeSummarization(recording, transcriptionText: transcriptionText)
+        }
+
+        await processingTask?.value
+        currentProcessingState = .idle
+    }
+
+    private func resumeSummarization(_ recording: RecordingInfo, transcriptionText: String) async {
+        let startTime = Date()
+
+        do {
+            let summaryText = try await performSummarizationPhase(recording, transcriptionText: transcriptionText)
+            guard !Task.isCancelled else { throw ProcessingError.cancelled }
+
+            await completeProcessing(
+                recording: recording,
+                transcriptionText: transcriptionText,
+                summaryText: summaryText,
+                startTime: startTime
+            )
+        } catch let error as ProcessingError {
+            await handleProcessingError(error, for: recording)
+        } catch {
+            let processingError = ProcessingError.summarizationFailed(error.localizedDescription)
+            await handleProcessingError(processingError, for: recording)
+        }
     }
     
     private func startQueueProcessing() {

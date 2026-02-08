@@ -14,6 +14,7 @@ protocol ProcessingCoordinatorType {
     func startProcessing(recordingInfo: RecordingInfo) async
     func cancelProcessing(recordingID: String) async
     func retryProcessing(recordingID: String) async
+    func retrySummarization(recordingID: String) async
 }
 
 @MainActor

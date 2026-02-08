@@ -78,20 +78,13 @@ final class SummaryViewModel: SummaryViewModelType {
     
     func retryProcessing() async {
         guard let recording = currentRecording else { return }
-        
+
         if recording.state == .transcriptionFailed {
             await processingCoordinator.retryProcessing(recordingID: recording.id)
+        } else if recording.state == .summarizationFailed || recording.state == .completed {
+            await processingCoordinator.retrySummarization(recordingID: recording.id)
         } else {
-            do {
-                try await recordingRepository.updateRecordingState(
-                    id: recording.id, 
-                    state: .summarizing,
-                    errorMessage: nil
-                )
-                await processingCoordinator.startProcessing(recordingInfo: recording)
-            } catch {
-                errorMessage = "Failed to retry summarization: \(error.localizedDescription)"
-            }
+            await processingCoordinator.retryProcessing(recordingID: recording.id)
         }
 
         loadRecording(withID: recording.id)
