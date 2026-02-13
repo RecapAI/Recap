@@ -1,16 +1,17 @@
-import Foundation
 import Combine
+import Foundation
+
 #if MOCKING
-import Mockable
+  import Mockable
 #endif
 
 #if MOCKING
-@Mockable
+  @Mockable
 #endif
 protocol AudioProcessControllerType: ObservableObject {
-    var processes: [AudioProcess] { get }
-    var processGroups: [AudioProcessGroup] { get }
-    var meetingApps: [AudioProcess] { get }
-    
-    func activate()
+  var processes: [AudioProcess] { get }
+  var processGroups: [AudioProcessGroup] { get }
+  var meetingApps: [AudioProcess] { get }
+
+  func activate()
 }

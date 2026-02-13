@@ -8,120 +8,93 @@
 import SwiftUI
 
 struct RecapHomeView: View {
-    @ObservedObject private var viewModel: RecapViewModel
-    
-    init(viewModel: RecapViewModel) {
-        self.viewModel = viewModel
-    }
-    
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                UIConstants.Gradients.backgroundGradient
-                    .ignoresSafeArea()
-                
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: UIConstants.Spacing.sectionSpacing) {
-                        HStack {
-                            Text("Recap")
-                                .foregroundColor(UIConstants.Colors.textPrimary)
-                                .font(UIConstants.Typography.appTitle)
-                                .padding(.leading, UIConstants.Spacing.contentPadding)
-                                .padding(.top, UIConstants.Spacing.sectionSpacing)
-                            
-                            Spacer()
-                        }
-                        
-                        ForEach(viewModel.activeWarnings, id: \.id) { warning in
-                            WarningCard(warning: warning, containerWidth: geometry.size.width)
-                                .padding(.horizontal, UIConstants.Spacing.contentPadding)
-                        }
-                        
-                        HStack(spacing: UIConstants.Spacing.cardSpacing) {
-                            HeatmapCard(
-                                title: "System Audio", 
-                                containerWidth: geometry.size.width,
-                                isSelected: true,
-                                audioLevel: viewModel.systemAudioHeatmapLevel,
-                                isInteractionEnabled: !viewModel.isRecording,
-                                onToggle: { }
-                            )
-                            HeatmapCard(
-                                title: "Microphone", 
-                                containerWidth: geometry.size.width,
-                                isSelected: viewModel.isMicrophoneEnabled,
-                                audioLevel: viewModel.microphoneHeatmapLevel,
-                                isInteractionEnabled: !viewModel.isRecording,
-                                onToggle: { 
-                                    viewModel.toggleMicrophone()
-                                }
-                            )
-                        }
-                        
-                        VStack(spacing: UIConstants.Spacing.cardSpacing) {
-                            CustomReflectionCard(
-                                containerWidth: geometry.size.width,
-                                appSelectionViewModel: viewModel.appSelectionViewModel,
-                                isRecording: viewModel.isRecording,
-                                recordingDuration: viewModel.recordingDuration,
-                                canStartRecording: viewModel.canStartRecording,
-                                onToggleRecording: {
-                                    Task {
-                                        if viewModel.isRecording {
-                                            await viewModel.stopRecording()
-                                        } else {
-                                            await viewModel.startRecording()
-                                        }
-                                    }
-                                }
-                            )
+  @ObservedObject private var viewModel: RecapViewModel
 
-                            TranscriptionCard(containerWidth: geometry.size.width) {
-                                viewModel.openView()
-                            }
-                            
-                            HStack(spacing: UIConstants.Spacing.cardSpacing) {
-                                InformationCard(
-                                    icon: "list.bullet.indent",
-                                    title: "Previous Recaps", 
-                                    description: "View past recordings",
-                                    containerWidth: geometry.size.width
-                                )
-                                .onTapGesture {
-                                    viewModel.openPreviousRecaps()
-                                }
-                                
-                                InformationCard(
-                                    icon: "gear",
-                                    title: "Settings",
-                                    description: "App preferences",
-                                    containerWidth: geometry.size.width
-                                )
-                                .onTapGesture {
-                                    viewModel.openSettings()
-                                }
-                            }
-                        }
-                        
-                        Spacer(minLength: UIConstants.Spacing.sectionSpacing)
-                    }
-                }
+  init(viewModel: RecapViewModel) {
+    self.viewModel = viewModel
+  }
+
+  var body: some View {
+    GeometryReader { geometry in
+      ZStack {
+        UIConstants.Gradients.backgroundGradient
+          .ignoresSafeArea()
+
+        ScrollView(.vertical, showsIndicators: false) {
+          VStack(spacing: UIConstants.Spacing.sectionSpacing) {
+            HStack {
+              Text("Recap")
+                .foregroundColor(UIConstants.Colors.textPrimary)
+                .font(UIConstants.Typography.appTitle)
+                .padding(.leading, UIConstants.Spacing.contentPadding)
+                .padding(.top, UIConstants.Spacing.sectionSpacing)
+
+              Spacer()
+
+              Button {
+                viewModel.closePanel()
+              } label: {
+                Image(systemName: "xmark.circle.fill")
+                  .foregroundColor(UIConstants.Colors.textSecondary)
+                  .font(.title2)
+              }
+              .buttonStyle(PlainButtonStyle())
+              .padding(.trailing, UIConstants.Spacing.contentPadding)
+              .padding(.top, UIConstants.Spacing.sectionSpacing)
             }
+
+            ForEach(viewModel.activeWarnings, id: \.id) { warning in
+              WarningCard(warning: warning, containerWidth: geometry.size.width)
+                .padding(.horizontal, UIConstants.Spacing.contentPadding)
+            }
+
+            VStack(spacing: UIConstants.Spacing.cardSpacing) {
+              TranscriptionCard(containerWidth: geometry.size.width) {
+                viewModel.openView()
+              }
+
+              HStack(spacing: UIConstants.Spacing.cardSpacing) {
+                InformationCard(
+                  icon: "list.bullet.indent",
+                  title: "Previous Recaps",
+                  description: "View past recordings",
+                  containerWidth: geometry.size.width
+                )
+                .onTapGesture {
+                  viewModel.openPreviousRecaps()
+                }
+
+                InformationCard(
+                  icon: "gear",
+                  title: "Settings",
+                  description: "App preferences",
+                  containerWidth: geometry.size.width
+                )
+                .onTapGesture {
+                  viewModel.openSettings()
+                }
+              }
+            }
+
+            Spacer(minLength: UIConstants.Spacing.sectionSpacing)
+          }
         }
-        .toast(isPresenting: $viewModel.showErrorToast) {
-            AlertToast(
-                displayMode: .banner(.slide),
-                type: .error(.red),
-                title: "Recording Error",
-                subTitle: viewModel.errorMessage
-            )
-        }
+      }
     }
+    .toast(isPresenting: $viewModel.showErrorToast) {
+      AlertToast(
+        displayMode: .banner(.slide),
+        type: .error(.red),
+        title: "Recording Error",
+        subTitle: viewModel.errorMessage
+      )
+    }
+  }
 }
 
 #Preview {
-    let viewModel = RecapViewModel.createForPreview()
-    
-    return RecapHomeView(viewModel: viewModel)
-        .frame(width: 500, height: 500)
+  let viewModel = RecapViewModel.createForPreview()
+
+  return RecapHomeView(viewModel: viewModel)
+    .frame(width: 500, height: 500)
 }

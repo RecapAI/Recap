@@ -12,8 +12,16 @@
         <attribute name="autoDetectMeetings" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="autoStopRecording" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="autoSummarizeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="autoSummarizeDuringRecording" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="autoSummarizeAfterRecording" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="autoTranscribeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="customTmpDirectoryPath" optional="YES" attributeType="String"/>
+        <attribute name="customTmpDirectoryBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="globalShortcutKeyCode" optional="YES" attributeType="Integer 32" defaultValueString="15" usesScalarValueType="YES"/>
+        <attribute name="globalShortcutModifiers" optional="YES" attributeType="Integer 32" defaultValueString="1048840" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
+        <attribute name="microphoneEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="modifiedAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
         <attribute name="onboarded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="selectedLLMModelID" optional="YES" attributeType="String"/>
@@ -35,6 +43,8 @@
         <attribute name="state" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="summaryText" optional="YES" attributeType="String"/>
         <attribute name="transcriptionText" optional="YES" attributeType="String"/>
+        <attribute name="timestampedTranscriptionData" optional="YES" attributeType="Binary"/>
+        <attribute name="structuredTranscriptionData" optional="YES" attributeType="Binary"/>
         <fetchIndex name="byCreatedAt">
             <fetchIndexElement property="createdAt" type="Binary" order="descending"/>
         </fetchIndex>

@@ -2,12 +2,12 @@ import Foundation
 
 @MainActor
 protocol AppSelectionCoordinatorType {
-    var delegate: AppSelectionCoordinatorDelegate? { get set }
-    func autoSelectApp(_ app: AudioProcess)
+  var delegate: AppSelectionCoordinatorDelegate? { get set }
+  func autoSelectApp(_ app: AudioProcess)
 }
 
 @MainActor
 protocol AppSelectionCoordinatorDelegate: AnyObject {
-    func didSelectApp(_ app: AudioProcess)
-    func didClearAppSelection()
+  func didSelectApp(_ app: AudioProcess)
+  func didClearAppSelection()
 }
