@@ -136,17 +136,31 @@ struct GeneralSettingsView<ViewModel: GeneralSettingsViewModelType>: View {
                             .ignoresSafeArea()
                             .transition(.opacity)
                         
-                        OpenRouterAPIKeyAlert(
-                            isPresented: Binding(
-                                get: { viewModel.showAPIKeyAlert },
-                                set: { _ in viewModel.dismissAPIKeyAlert() }
-                            ),
-                            existingKey: viewModel.existingAPIKey,
-                            onSave: { apiKey in
-                                try await viewModel.saveAPIKey(apiKey)
-                            }
-                        )
-                        .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        if viewModel.pendingAPIKeyProvider == .requesty {
+                            RequestyAPIKeyAlert(
+                                isPresented: Binding(
+                                    get: { viewModel.showAPIKeyAlert },
+                                    set: { _ in viewModel.dismissAPIKeyAlert() }
+                                ),
+                                existingKey: viewModel.existingAPIKey,
+                                onSave: { apiKey in
+                                    try await viewModel.saveAPIKey(apiKey)
+                                }
+                            )
+                            .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        } else {
+                            OpenRouterAPIKeyAlert(
+                                isPresented: Binding(
+                                    get: { viewModel.showAPIKeyAlert },
+                                    set: { _ in viewModel.dismissAPIKeyAlert() }
+                                ),
+                                existingKey: viewModel.existingAPIKey,
+                                onSave: { apiKey in
+                                    try await viewModel.saveAPIKey(apiKey)
+                                }
+                            )
+                            .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        }
                     }
                 }
             }
@@ -200,6 +214,7 @@ private final class PreviewGeneralSettingsViewModel: GeneralSettingsViewModelTyp
     @Published var toastMessage = ""
     @Published var showAPIKeyAlert = false
     @Published var existingAPIKey: String?
+    @Published var pendingAPIKeyProvider: LLMProvider?
     @Published var activeWarnings: [WarningItem] = [
         WarningItem(
             id: "ollama",

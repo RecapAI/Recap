@@ -35,6 +35,7 @@ enum KeychainError: Error, LocalizedError {
 
 enum KeychainKey: String, CaseIterable {
     case openRouterApiKey = "openrouter_api_key"
+    case requestyApiKey = "requesty_api_key"
     
     var key: String {
         return "com.recap.\(rawValue)"

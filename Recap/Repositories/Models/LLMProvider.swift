@@ -3,6 +3,7 @@ import Foundation
 enum LLMProvider: String, CaseIterable, Identifiable {
     case ollama = "ollama"
     case openRouter = "openrouter"
+    case requesty = "requesty"
     
     var id: String { rawValue }
     
@@ -12,6 +13,8 @@ enum LLMProvider: String, CaseIterable, Identifiable {
             return "Ollama"
         case .openRouter:
             return "OpenRouter"
+        case .requesty:
+            return "Requesty"
         }
     }
     
