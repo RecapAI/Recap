@@ -77,6 +77,7 @@ Right now, Recap is more of a POC of what I am trying to make. It records system
 **LLM Options:**
 - **Ollama** (recommended): Complete privacy - everything stays on your device
 - **OpenRouter**: Cloud-based option if you lack local compute capacity, but data leaves your device
+- **Requesty**: Cloud-based OpenAI-compatible router ([requesty.ai](https://requesty.ai)); get an API key at [app.requesty.ai/api-keys](https://app.requesty.ai/api-keys), but data leaves your device
 
 ## System Requirements
 
@@ -101,6 +102,20 @@ Right now, Recap is more of a POC of what I am trying to make. It records system
 | **Processor** | Apple M1 | Apple M2 or newer |
 | **RAM** | 8 GB | 16 GB or more |
 | **Storage** | 2 GB free space | 5 GB free space |
+
+</details>
+
+<details>
+    <summary>Requesty (Cloud Processing)</summary>
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| **macOS** | 15.0 or later | 15.0 or later |
+| **Processor** | Apple M1 | Apple M2 or newer |
+| **RAM** | 8 GB | 16 GB or more |
+| **Storage** | 2 GB free space | 5 GB free space |
+
+Requesty is an OpenAI-compatible router (base URL `https://router.requesty.ai/v1`). Get an API key at [app.requesty.ai/api-keys](https://app.requesty.ai/api-keys).
 
 </details>
 
@@ -217,8 +232,9 @@ Read [OpenRouter documentation](https://openrouter.ai/docs/api-keys) to get a ke
 2. **Configure LLM Provider:**
 
    * Go to **Settings → LLM Models**
-   * Choose your preferred provider (Ollama or OpenRouter)
+   * Choose your preferred provider (Ollama, OpenRouter, or Requesty)
    * If using Ollama, ensure it's installed and running locally
+   * If using Requesty, add your API key from [app.requesty.ai/api-keys](https://app.requesty.ai/api-keys)
 
 3. **Start Recording:**
 

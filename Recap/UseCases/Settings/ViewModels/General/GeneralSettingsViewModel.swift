@@ -29,6 +29,7 @@ final class GeneralSettingsViewModel: GeneralSettingsViewModelType {
     @Published private(set) var activeWarnings: [WarningItem] = []
     @Published private(set) var showAPIKeyAlert = false
     @Published private(set) var existingAPIKey: String?
+    @Published private(set) var pendingAPIKeyProvider: LLMProvider?
     
     var hasModels: Bool {
         !availableModels.isEmpty
@@ -129,6 +130,22 @@ final class GeneralSettingsViewModel: GeneralSettingsViewModelType {
                 } catch {
                     existingAPIKey = nil
                 }
+                pendingAPIKeyProvider = .openRouter
+                showAPIKeyAlert = true
+                return
+            }
+        }
+        
+        if provider == .requesty {
+            let validation = keychainAPIValidator.validateRequestyAPI()
+            
+            if !validation.isValid {
+                do {
+                    existingAPIKey = try keychainService.retrieveRequestyAPIKey()
+                } catch {
+                    existingAPIKey = nil
+                }
+                pendingAPIKeyProvider = .requesty
                 showAPIKeyAlert = true
                 return
             }
@@ -205,16 +222,25 @@ final class GeneralSettingsViewModel: GeneralSettingsViewModelType {
     }
     
     func saveAPIKey(_ apiKey: String) async throws {
-        try keychainService.storeOpenRouterAPIKey(apiKey)
+        let provider = pendingAPIKeyProvider ?? .openRouter
+        
+        switch provider {
+        case .requesty:
+            try keychainService.storeRequestyAPIKey(apiKey)
+        case .openRouter, .ollama:
+            try keychainService.storeOpenRouterAPIKey(apiKey)
+        }
         
         existingAPIKey = apiKey
         showAPIKeyAlert = false
+        pendingAPIKeyProvider = nil
         
-        await selectProvider(.openRouter)
+        await selectProvider(provider)
     }
     
     func dismissAPIKeyAlert() {
         showAPIKeyAlert = false
         existingAPIKey = nil
+        pendingAPIKeyProvider = nil
     }
 }

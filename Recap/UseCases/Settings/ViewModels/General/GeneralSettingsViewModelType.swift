@@ -19,6 +19,7 @@ protocol GeneralSettingsViewModelType: ObservableObject {
     var customPromptTemplate: Binding<String> { get }
     var showAPIKeyAlert: Bool { get }
     var existingAPIKey: String? { get }
+    var pendingAPIKeyProvider: LLMProvider? { get }
     
     func loadModels() async
     func selectModel(_ model: LLMModelInfo) async
